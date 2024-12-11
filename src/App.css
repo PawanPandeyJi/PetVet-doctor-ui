@@ -1,0 +1,47 @@
+.myPetContainer {
+    width: 100%;
+    height: 90vh;
+    display: flex;
+    gap: 2rem;
+}
+
+.myPetsCards {
+    width: 50%;
+    height: 100%;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    overflow: auto;
+}
+
+.petCard {
+    display: flex;
+    border: 1px solid gray;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+}
+
+
+.petDetail {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.petDetail>img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+
+.muibtns {
+    display: flex;
+    gap: 1rem;
+}
+
+.myPetForm {
+    width: 50%;
+    height: 100%;
+}
