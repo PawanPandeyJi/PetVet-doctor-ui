@@ -14,7 +14,7 @@ function App() {
         <ResponsiveAppBar />
         <Routes>
           <Route path="/" element={<DoctorProfile />} />
-          <Route path="/register" element={<DoctorRegister/>} />
+          <Route path="/register" element={<DoctorRegister />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
