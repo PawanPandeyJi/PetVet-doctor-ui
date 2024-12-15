@@ -31,10 +31,9 @@ function Signup() {
   const handleSubmit: React.ChangeEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     try {
-      const response = await createUsers(formData).unwrap();
+      const response = await createUsers({ user: { ...formData }, type: "doctor" }).unwrap();
       disPatch(login(response.token));
-      console.log(response.token);
-      navigate("/");
+      navigate("/register");
     } catch (err) {
       const message = (err as BackendError)?.data?.message || "An unexpected error occurred.";
       setErrorMessage(message);
@@ -49,7 +48,7 @@ function Signup() {
   useEffect(() => {
     if (isLoggedIn) {
       window.location.reload();
-      navigate("/");
+      navigate("/register");
     }
   }, [isLoggedIn, navigate]);
   return (

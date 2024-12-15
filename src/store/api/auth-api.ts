@@ -13,7 +13,6 @@ type LoginUser = {
   password: string;
 };
 
-
 export type BackendError = {
   status: number;
   data: {
@@ -41,18 +40,18 @@ export const userApi = createApi({
     baseUrl: "http://localhost:8000/api/auth",
   }),
   endpoints: (builder) => ({
-    createUsers: builder.mutation<CreateUser, User>({
-      query: (user) => ({
+    createUsers: builder.mutation<CreateUser, { user: User; type: string }>({
+      query: ({ user, type }) => ({
         url: "/signup",
         method: "POST",
-        body: user,
+        body: { ...user, type },
       }),
     }),
-    loginUsers: builder.mutation<CreateUser, LoginUser>({
-      query: (loginUser) => ({
+    loginUsers: builder.mutation<CreateUser, { loginUser: LoginUser; type: string }>({
+      query: ({ loginUser, type }) => ({
         url: "/login",
         method: "POST",
-        body: loginUser,
+        body: { ...loginUser, type },
       }),
     }),
     loginUserData: builder.query<LoggedUserData, void>({

@@ -17,7 +17,6 @@ const Login = () => {
   const disPatch = useDispatch();
   const navigate = useNavigate();
 
-
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -29,24 +28,24 @@ const Login = () => {
   const handleSubmit: React.ChangeEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     try {
-      const response = await loginUsers(formData).unwrap();
+      const response = await loginUsers({ loginUser: { ...formData }, type: "doctor" }).unwrap();
       disPatch(login(response.token));
-      navigate("/");
+      navigate("/register");
     } catch (err) {
       const message = (err as BackendError)?.data?.message || "An unexpected error occurred.";
       setErrorMessage(message);
-      setSnackbarOpen(true); 
+      setSnackbarOpen(true);
     }
   };
 
   const handleCloseSnackbar = () => {
-    setSnackbarOpen(false); 
+    setSnackbarOpen(false);
   };
 
   useEffect(() => {
     if (isLoggedIn) {
       window.location.reload();
-      navigate("/");
+      navigate("/register");
     }
   }, [isLoggedIn, navigate]);
 
