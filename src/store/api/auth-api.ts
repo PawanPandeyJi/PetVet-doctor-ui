@@ -37,7 +37,7 @@ type LoggedUserData = {
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: tokenFetchBaseQuery({
-    baseUrl: "http://localhost:8000/api/auth",
+    baseUrl: "http://localhost:8000/auth",
   }),
   endpoints: (builder) => ({
     createUsers: builder.mutation<CreateUser, { user: User; type: string }>({

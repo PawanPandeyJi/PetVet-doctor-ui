@@ -33,19 +33,19 @@ export type BackendError = {
 export const doctorApi = createApi({
   reducerPath: "doctorApi",
   baseQuery: tokenFetchBaseQuery({
-    baseUrl: "http://localhost:8000/api/doctor",
+    baseUrl: "http://localhost:8000",
   }),
   endpoints: (builder) => ({
     createDoctor: builder.mutation<{ message: string }, FormData>({
       query: (formData) => ({
-        url: "/register",
+        url: "/doctor",
         method: "POST",
         body: formData,
       }),
     }),
     getDoctor: builder.query<Doctor, void>({
       query: () => ({
-        url: "/profile",
+        url: "/doctor",
         method: "GET",
       }),
     }),
