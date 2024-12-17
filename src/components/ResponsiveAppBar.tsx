@@ -13,8 +13,12 @@ import { useGetDoctorQuery } from "../store/api/doctor-api";
 
 function ResponsiveAppBar() {
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
-  const { data: loggedInUserData } = useLoginUserDataQuery();
-  const { data: getDoctorDetails } = useGetDoctorQuery();
+  const { data: loggedInUserData } = useLoginUserDataQuery(undefined, {
+    skip: !isLoggedIn,
+  });
+  const { data: getDoctorDetails } = useGetDoctorQuery(undefined, {
+    skip: !isLoggedIn,
+  });
 
   return (
     <AppBar position="static" color="success">
