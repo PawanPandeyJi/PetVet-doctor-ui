@@ -6,6 +6,7 @@ import Logout from "./pages/Logout";
 import Signup from "./pages/Signup";
 import DoctorRegister from "./pages/DoctorRegister";
 import DoctorProfile from "./pages/DoctorProfile";
+import Appointments from "./pages/Appointments";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<DoctorProfile />} />
           <Route path="/register" element={<DoctorRegister />} />
+          <Route path="/appointments" element={<Appointments />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />

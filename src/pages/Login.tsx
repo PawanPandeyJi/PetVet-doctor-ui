@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login } from "../store/feature/auth/authSlice";
 import { RootState } from "../store/store";
+import { useGetDoctorQuery } from "../store/api/doctor-api";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +17,7 @@ const Login = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const disPatch = useDispatch();
   const navigate = useNavigate();
+  const { data: getDoctorDetails } = useGetDoctorQuery();
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -30,7 +32,7 @@ const Login = () => {
     try {
       const response = await loginUsers({ loginUser: { ...formData }, type: "doctor" }).unwrap();
       disPatch(login(response.token));
-      navigate("/register");
+      window.location.href = "/";
     } catch (err) {
       const message = (err as BackendError)?.data?.message || "An unexpected error occurred.";
       setErrorMessage(message);
@@ -43,11 +45,10 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (isLoggedIn) {
-      window.location.reload();
-      navigate("/register");
+    if (isLoggedIn && getDoctorDetails) {
+      navigate("/");
     }
-  }, [isLoggedIn, navigate]);
+  }, [isLoggedIn, navigate, getDoctorDetails]);
 
   return (
     <Box

@@ -47,6 +47,9 @@ function ResponsiveAppBar() {
                   <Button component={Link} to="/" color="inherit">
                     Your Profile
                   </Button>
+                  <Button component={Link} to="/appointments" color="inherit">
+                    Appointments
+                  </Button>
                 </>
               ) : (
                 <>
