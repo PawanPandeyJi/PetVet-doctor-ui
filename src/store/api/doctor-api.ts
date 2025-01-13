@@ -85,7 +85,7 @@ export const doctorApi = createApi({
         method: "GET",
       }),
     }),
-    getAppointments: builder.query<Appointment, void>({
+    getAppointments: builder.query<Appointment[], void>({
       query: () => ({
         url: "/doctor/appointments",
         method: "GET",
