@@ -1,8 +1,9 @@
+import { useGetAppointmentsQuery } from "../store/api/doctor-api";
 
 const Appointments = () => {
-  return (
-    <div>Appointments</div>
-  )
-}
+  const { data } = useGetAppointmentsQuery();
+  console.log(data);
+  return <div>Appointments</div>;
+};
 
-export default Appointments
+export default Appointments;
