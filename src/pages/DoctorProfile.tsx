@@ -5,26 +5,41 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { useNavigate } from "react-router-dom";
+import Loader from "../components/Loader";
 
 const DoctorProfile = () => {
-  const { data: doctorDetail } = useGetDoctorQuery();
-  const { data: loggedInUserData } = useLoginUserDataQuery();
+  const { data: doctorDetail, isLoading: isDoctorDetailLoading } = useGetDoctorQuery();
+  const {
+    data: loggedInUserData,
+    isLoading: isLoginUserDataLoading,
+    isError,
+  } = useLoginUserDataQuery();
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const navigate = useNavigate();
+
+  const isLoading = isDoctorDetailLoading || isLoginUserDataLoading;
 
   const { DoctorShedule } = doctorDetail || {};
   const availableDays = DoctorShedule?.map((val) => val.availableDays);
   const availableTimeFrom = DoctorShedule?.map((val) => val.availableTimeFrom);
   const availableTimeTo = DoctorShedule?.map((val) => val.availableTimeTo);
-  const doctorId = DoctorShedule?.map((val) => val.doctorId);
+  const doctorId =  DoctorShedule?.map((val) => val.doctorId);
 
   useEffect(() => {
     if (!isLoggedIn) {
       navigate("/login");
-    } else if (!loggedInUserData) {
+    } else if (!doctorDetail && !isDoctorDetailLoading) {
       navigate("/register");
     }
-  }, [navigate, isLoggedIn, loggedInUserData]);
+  }, [navigate, isLoggedIn, doctorDetail, isDoctorDetailLoading]);
+
+  if (isLoading) {
+    return <><Loader/></>;
+  }
+
+  if (isError) {
+    return <>Error</>;
+  }
   return (
     <Box sx={{ padding: 4, backgroundColor: "#f9f9f9", minHeight: "100vh" }}>
       {!doctorDetail?.isApproved && (

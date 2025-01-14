@@ -142,14 +142,10 @@ const DoctorRegister = () => {
   };
 
   useEffect(() => {
-    if(!isLoggedIn) {
-      navigate('/login')
-    }else if (isLoggedIn && !getDoctorDetails) {
-      navigate("/register");
-    } else {
+    if (isLoggedIn && getDoctorDetails) {
       navigate("/");
     }
-  }, [navigate, getDoctorDetails,isLoggedIn]);
+  }, [navigate, getDoctorDetails, isLoggedIn]);
 
   return (
     <Box sx={{ p: 1, maxWidth: 1200, mx: "auto" }}>
