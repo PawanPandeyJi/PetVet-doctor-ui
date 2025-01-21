@@ -11,6 +11,7 @@ import {
 import { VaccinesOutlined } from "@mui/icons-material";
 
 type AppointmentDataProps = {
+  key: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -24,6 +25,10 @@ type AppointmentDataProps = {
   appointmentDay: string;
   time: string;
   petImage: string;
+  onClickJoin: () => void;
+  canJoin: boolean;
+  isConnected: boolean;
+  disconnect: () => void;
 };
 
 const AppointmentCard = (props: AppointmentDataProps) => {
@@ -76,16 +81,34 @@ const AppointmentCard = (props: AppointmentDataProps) => {
       <CardActions
         sx={{
           display: "flex",
+          width: "100%",
           justifyContent: "space-between",
         }}
       >
-        <Tooltip title={`You can join on ${props.appointmentDay}`}>
-          <span style={{display: "flex", justifyContent: "center",width: "100%"}}>
-            <Button variant="contained" color="primary">
-              Ask to Join
+        {props.canJoin && props.isConnected ? (
+          <>
+            <Button variant="contained" color="error" onClick={props.disconnect}>
+              Disconnect
             </Button>
-          </span>
-        </Tooltip>
+            <Tooltip title={`Waiting for user to connect`}>
+              <span>
+                <Button variant="contained" color="primary">
+                  Chat
+                </Button>
+              </span>
+            </Tooltip>
+          </>
+        ) : (
+          <>
+            <Tooltip title={`You can join on ${props.appointmentDay}`}>
+              <span style={{ display: "flex", justifyContent: "center", width: "100%" }}>
+                <Button variant="contained" color="primary" onClick={props.onClickJoin}>
+                  Ask to Join
+                </Button>
+              </span>
+            </Tooltip>
+          </>
+        )}
       </CardActions>
     </Card>
   );

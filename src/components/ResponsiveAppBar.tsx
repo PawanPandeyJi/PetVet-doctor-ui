@@ -12,7 +12,9 @@ import { deepPurple } from "@mui/material/colors";
 import { useGetDoctorQuery } from "../store/api/doctor-api";
 
 function ResponsiveAppBar() {
-  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+  const isLoggedIn = useSelector((state: RootState) => {
+    return state.auth.isLoggedIn;
+  });
   const { data: loggedInUserData } = useLoginUserDataQuery(undefined, {
     skip: !isLoggedIn,
   });
