@@ -7,8 +7,11 @@ import {
   Button,
   Box,
   Tooltip,
+  Modal,
 } from "@mui/material";
 import { VaccinesOutlined } from "@mui/icons-material";
+import ChatBox from "./ChatBox";
+import { useState } from "react";
 
 type AppointmentDataProps = {
   key: string;
@@ -31,7 +34,20 @@ type AppointmentDataProps = {
   disconnect: () => void;
 };
 
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  p: 1,
+};
+
 const AppointmentCard = (props: AppointmentDataProps) => {
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => setOpen(false);
+  const handleOpen = () => setOpen(true);
+
   return (
     <Card
       sx={{
@@ -92,7 +108,7 @@ const AppointmentCard = (props: AppointmentDataProps) => {
             </Button>
             <Tooltip title={`Waiting for user to connect`}>
               <span>
-                <Button variant="contained" color="primary">
+                <Button variant="contained" color="primary" onClick={handleOpen}>
                   Chat
                 </Button>
               </span>
@@ -110,6 +126,17 @@ const AppointmentCard = (props: AppointmentDataProps) => {
           </>
         )}
       </CardActions>
+      <div>
+        <Modal open={open} onClose={handleClose}>
+          <Box sx={style}>
+            <ChatBox
+              onClose={() => setOpen(false)}
+              petImage={props.petImage}
+              petName={props.petName}
+            />
+          </Box>
+        </Modal>
+      </div>
     </Card>
   );
 };
