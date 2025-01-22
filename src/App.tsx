@@ -7,8 +7,20 @@ import Signup from "./pages/Signup";
 import DoctorRegister from "./pages/DoctorRegister";
 import DoctorProfile from "./pages/DoctorProfile";
 import Appointments from "./pages/Appointments";
+import { useEffect } from "react";
+import { setupSocketConnection } from "./socket";
+import { useLoginUserDataQuery } from "./store/api/auth-api";
+import { socket } from "./socket";
 
 function App() {
+  const { data: loggedInUserData } = useLoginUserDataQuery();
+  useEffect(() => {
+    if (loggedInUserData) {
+      socket.emit("USER", { userId: loggedInUserData.id });
+      setupSocketConnection();
+    }
+  }, [loggedInUserData]);
+
   return (
     <>
       <BrowserRouter>

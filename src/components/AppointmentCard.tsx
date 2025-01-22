@@ -7,10 +7,14 @@ import {
   Button,
   Box,
   Tooltip,
+  Modal,
 } from "@mui/material";
 import { VaccinesOutlined } from "@mui/icons-material";
+import ChatBox from "./ChatBox";
+import { useState } from "react";
 
 type AppointmentDataProps = {
+  key: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -24,9 +28,26 @@ type AppointmentDataProps = {
   appointmentDay: string;
   time: string;
   petImage: string;
+  onClickJoin: () => void;
+  canJoin: boolean;
+  isConnected: boolean;
+  disconnect: () => void;
+};
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  p: 1,
 };
 
 const AppointmentCard = (props: AppointmentDataProps) => {
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => setOpen(false);
+  const handleOpen = () => setOpen(true);
+
   return (
     <Card
       sx={{
@@ -76,17 +97,46 @@ const AppointmentCard = (props: AppointmentDataProps) => {
       <CardActions
         sx={{
           display: "flex",
+          width: "100%",
           justifyContent: "space-between",
         }}
       >
-        <Tooltip title={`You can join on ${props.appointmentDay}`}>
-          <span style={{display: "flex", justifyContent: "center",width: "100%"}}>
-            <Button variant="contained" color="primary">
-              Ask to Join
+        {props.canJoin && props.isConnected ? (
+          <>
+            <Button variant="contained" color="error" onClick={props.disconnect}>
+              Disconnect
             </Button>
-          </span>
-        </Tooltip>
+            <Tooltip title={`Waiting for user to connect`}>
+              <span>
+                <Button variant="contained" color="primary" onClick={handleOpen}>
+                  Chat
+                </Button>
+              </span>
+            </Tooltip>
+          </>
+        ) : (
+          <>
+            <Tooltip title={`You can join on ${props.appointmentDay}`}>
+              <span style={{ display: "flex", justifyContent: "center", width: "100%" }}>
+                <Button variant="contained" color="primary" onClick={props.onClickJoin}>
+                  Ask to Join
+                </Button>
+              </span>
+            </Tooltip>
+          </>
+        )}
       </CardActions>
+      <div>
+        <Modal open={open} onClose={handleClose}>
+          <Box sx={style}>
+            <ChatBox
+              onClose={() => setOpen(false)}
+              petImage={props.petImage}
+              petName={props.petName}
+            />
+          </Box>
+        </Modal>
+      </div>
     </Card>
   );
 };

@@ -37,6 +37,7 @@ type Appointment = {
   petId: string;
   appointmentDay: string;
   isCanceled: boolean;
+  canJoin: boolean;
   createdAt: string;
   updatedAt: string;
   appointmentOfUserPet: {
@@ -71,6 +72,7 @@ export const doctorApi = createApi({
   baseQuery: tokenFetchBaseQuery({
     baseUrl: "http://localhost:8000",
   }),
+  tagTypes: ["appointment"],
   endpoints: (builder) => ({
     createDoctor: builder.mutation<{ message: string }, FormData>({
       query: (formData) => ({
@@ -90,8 +92,29 @@ export const doctorApi = createApi({
         url: "/doctor/appointments",
         method: "GET",
       }),
+      providesTags: ["appointment"],
+    }),
+    askToJoin: builder.mutation<void, string>({
+      query: (id) => ({
+        url: `/joinAppointment/${id}`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["appointment"],
+    }),
+    disconnectUser: builder.mutation<void, string>({
+      query: (id) => ({
+        url: `/disconnect/${id}`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["appointment"],
     }),
   }),
 });
 
-export const { useCreateDoctorMutation, useGetDoctorQuery, useGetAppointmentsQuery } = doctorApi;
+export const {
+  useCreateDoctorMutation,
+  useGetDoctorQuery,
+  useGetAppointmentsQuery,
+  useAskToJoinMutation,
+  useDisconnectUserMutation,
+} = doctorApi;
