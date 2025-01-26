@@ -62,25 +62,27 @@ const Appointments = () => {
         }}
       >
         {appointment &&
-          appointment.map((val) => {
+          appointment.map((appointment) => {
             return (
               <AppointmentCard
-                key={val.id}
-                firstName={val.appointmentOfUserPet.firstName}
-                lastName={val.appointmentOfUserPet.lastName}
-                email={val.appointmentOfUserPet.email}
-                petName={val.appointmentToPet.petName}
-                age={val.appointmentToPet.age}
-                breed={val.appointmentToPet.breed}
-                weight={val.appointmentToPet.weight}
-                type={val.appointmentToPet.type}
-                gender={val.appointmentToPet.gender}
-                color={val.appointmentToPet.color}
-                appointmentDay={val.appointmentDay}
-                petImage={val.petImage}
+                key={appointment.id}
+                appointmentId={appointment.id}
+                userId={appointment.userId}
+                firstName={appointment.appointmentOfUserPet.firstName}
+                lastName={appointment.appointmentOfUserPet.lastName}
+                email={appointment.appointmentOfUserPet.email}
+                petName={appointment.appointmentToPet.petName}
+                age={appointment.appointmentToPet.age}
+                breed={appointment.appointmentToPet.breed}
+                weight={appointment.appointmentToPet.weight}
+                type={appointment.appointmentToPet.type}
+                gender={appointment.appointmentToPet.gender}
+                color={appointment.appointmentToPet.color}
+                appointmentDay={appointment.appointmentDay}
+                petImage={appointment.petImage}
                 time="06:30 PM"
-                onClickJoin={() => handleSocketConnection(val.id)}
-                canJoin={val.id === appointmentIdToBeJoined ? val.canJoin : false}
+                onClickJoin={() => handleSocketConnection(appointment.id)}
+                canJoin={appointment.id === appointmentIdToBeJoined ? appointment.canJoin : false}
                 isConnected={true}
                 disconnect={handleDisconnect}
               />
