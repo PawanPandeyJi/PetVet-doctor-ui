@@ -10,6 +10,7 @@ import {
   Modal,
 } from "@mui/material";
 import { VaccinesOutlined } from "@mui/icons-material";
+import UploadSharpIcon from "@mui/icons-material/UploadSharp";
 import ChatBox from "./ChatBox";
 import { useCallback, useEffect, useState } from "react";
 import { useLoginUserDataQuery } from "../store/api/auth-api";
@@ -39,6 +40,7 @@ type AppointmentDataProps = {
   onClickJoin: () => void;
   canJoin: boolean;
   isConnected: boolean;
+  isChatEnded: boolean;
   disconnect: () => void;
 };
 
@@ -162,13 +164,22 @@ const AppointmentCard = (props: AppointmentDataProps) => {
           </>
         ) : (
           <>
-            <Tooltip title={`You can join on ${props.appointmentDay}`}>
+            {props.isChatEnded ? (
               <span style={{ display: "flex", justifyContent: "center", width: "100%" }}>
-                <Button variant="contained" color="primary" onClick={props.onClickJoin}>
-                  Ask to Join
+                <Button variant="contained" color="success" onClick={joinAppointment}>
+                  View Chat or Presciption
+                  <UploadSharpIcon color="inherit" sx={{ height: 20, width: 20 }} />
                 </Button>
               </span>
-            </Tooltip>
+            ) : (
+              <Tooltip title={`You can join on ${props.appointmentDay}`}>
+                <span style={{ display: "flex", justifyContent: "center", width: "100%" }}>
+                  <Button variant="contained" color="primary" onClick={props.onClickJoin}>
+                    Ask to Join
+                  </Button>
+                </span>
+              </Tooltip>
+            )}
           </>
         )}
       </CardActions>
@@ -180,6 +191,7 @@ const AppointmentCard = (props: AppointmentDataProps) => {
               onClose={() => setOpenChatBox(false)}
               petImage={props.petImage}
               petName={props.petName}
+              isChatEnded={props.isChatEnded}
             />
           </Box>
         </Modal>

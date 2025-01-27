@@ -85,6 +85,7 @@ const Appointments = () => {
                 canJoin={appointment.id === appointmentIdToBeJoined ? appointment.canJoin : false}
                 isConnected={true}
                 disconnect={handleDisconnect}
+                isChatEnded={appointment.isChatEnded}
               />
             );
           })}
