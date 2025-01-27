@@ -11,10 +11,17 @@ import {
 } from "@mui/material";
 import { VaccinesOutlined } from "@mui/icons-material";
 import ChatBox from "./ChatBox";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useLoginUserDataQuery } from "../store/api/auth-api";
+import { useCreateRoomMutation, useGetRoomsQuery } from "../store/api/chat";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:8000", {});
 
 type AppointmentDataProps = {
   key: string;
+  userId: string;
+  appointmentId: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -43,10 +50,46 @@ const style = {
 };
 
 const AppointmentCard = (props: AppointmentDataProps) => {
-  const [open, setOpen] = useState(false);
+  const [openChatBox, setOpenChatBox] = useState(false);
+  const [roomId, setRoomId] = useState<string>();
 
-  const handleClose = () => setOpen(false);
-  const handleOpen = () => setOpen(true);
+  const { data: loginUserData } = useLoginUserDataQuery();
+  const { data: rooms, isLoading: isRoomsLoading, refetch } = useGetRoomsQuery(undefined);
+  const [createRoomApi] = useCreateRoomMutation();
+
+  const handleClose = () => setOpenChatBox(false);
+
+  const joinAppointment = useCallback(async () => {
+    if (!loginUserData?.id) return;
+    if (isRoomsLoading) return;
+
+    let currentRoomId;
+
+    const previousRoom = rooms?.find((room) => room.appointmentId === props.appointmentId);
+
+    if (!previousRoom) {
+      const room = await createRoomApi({
+        participant: props.userId,
+        appointmentId: props.appointmentId,
+      }).unwrap();
+      currentRoomId = room.id;
+    } else {
+      currentRoomId = previousRoom.id;
+    }
+
+    setRoomId(currentRoomId);
+    socket.emit("askToJoin", {});
+    setOpenChatBox(true);
+  }, [createRoomApi, isRoomsLoading, loginUserData?.id, props.appointmentId, props.userId, rooms]);
+
+  useEffect(() => {
+    const handleAskToJoin = () => refetch();
+    socket.on("askToJoin", handleAskToJoin);
+
+    return () => {
+      socket.off("askToJoin", handleAskToJoin);
+    };
+  }, [refetch]);
 
   return (
     <Card
@@ -108,7 +151,7 @@ const AppointmentCard = (props: AppointmentDataProps) => {
             </Button>
             <Tooltip title={`Waiting for user to connect`}>
               <span>
-                <Button variant="contained" color="primary" onClick={handleOpen}>
+                <Button variant="contained" color="primary" onClick={joinAppointment}>
                   Chat
                 </Button>
               </span>
@@ -127,10 +170,11 @@ const AppointmentCard = (props: AppointmentDataProps) => {
         )}
       </CardActions>
       <div>
-        <Modal open={open} onClose={handleClose}>
+        <Modal open={openChatBox && !!roomId} onClose={handleClose}>
           <Box sx={style}>
             <ChatBox
-              onClose={() => setOpen(false)}
+              roomId={roomId ?? ""}
+              onClose={() => setOpenChatBox(false)}
               petImage={props.petImage}
               petName={props.petName}
             />
