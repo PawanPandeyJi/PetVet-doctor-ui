@@ -10,11 +10,13 @@ import {
   Modal,
 } from "@mui/material";
 import { VaccinesOutlined } from "@mui/icons-material";
+import UploadSharpIcon from "@mui/icons-material/UploadSharp";
 import ChatBox from "./ChatBox";
 import { useCallback, useEffect, useState } from "react";
 import { useLoginUserDataQuery } from "../store/api/auth-api";
 import { useCreateRoomMutation, useGetRoomsQuery } from "../store/api/chat";
 import { io } from "socket.io-client";
+import ConfirmMessageCard from "./ConfirmMessageCard";
 
 const socket = io("http://localhost:8000", {});
 
@@ -38,6 +40,7 @@ type AppointmentDataProps = {
   onClickJoin: () => void;
   canJoin: boolean;
   isConnected: boolean;
+  isChatEnded: boolean;
   disconnect: () => void;
 };
 
@@ -51,6 +54,7 @@ const style = {
 
 const AppointmentCard = (props: AppointmentDataProps) => {
   const [openChatBox, setOpenChatBox] = useState(false);
+  const [openConfirmCard, setOpenConfirmCard] = useState(false);
   const [roomId, setRoomId] = useState<string>();
 
   const { data: loginUserData } = useLoginUserDataQuery();
@@ -58,6 +62,7 @@ const AppointmentCard = (props: AppointmentDataProps) => {
   const [createRoomApi] = useCreateRoomMutation();
 
   const handleClose = () => setOpenChatBox(false);
+  const handleConfirmCardClose = () => setOpenConfirmCard(false);
 
   const joinAppointment = useCallback(async () => {
     if (!loginUserData?.id) return;
@@ -146,8 +151,8 @@ const AppointmentCard = (props: AppointmentDataProps) => {
       >
         {props.canJoin && props.isConnected ? (
           <>
-            <Button variant="contained" color="error" onClick={props.disconnect}>
-              Disconnect
+            <Button variant="contained" color="error" onClick={() => setOpenConfirmCard(true)}>
+              End Chat
             </Button>
             <Tooltip title={`Waiting for user to connect`}>
               <span>
@@ -159,13 +164,22 @@ const AppointmentCard = (props: AppointmentDataProps) => {
           </>
         ) : (
           <>
-            <Tooltip title={`You can join on ${props.appointmentDay}`}>
+            {props.isChatEnded ? (
               <span style={{ display: "flex", justifyContent: "center", width: "100%" }}>
-                <Button variant="contained" color="primary" onClick={props.onClickJoin}>
-                  Ask to Join
+                <Button variant="contained" color="success" onClick={joinAppointment}>
+                  View Chat or Presciption
+                  <UploadSharpIcon color="inherit" sx={{ height: 20, width: 20 }} />
                 </Button>
               </span>
-            </Tooltip>
+            ) : (
+              <Tooltip title={`You can join on ${props.appointmentDay}`}>
+                <span style={{ display: "flex", justifyContent: "center", width: "100%" }}>
+                  <Button variant="contained" color="primary" onClick={props.onClickJoin}>
+                    Ask to Join
+                  </Button>
+                </span>
+              </Tooltip>
+            )}
           </>
         )}
       </CardActions>
@@ -177,6 +191,22 @@ const AppointmentCard = (props: AppointmentDataProps) => {
               onClose={() => setOpenChatBox(false)}
               petImage={props.petImage}
               petName={props.petName}
+              isChatEnded={props.isChatEnded}
+            />
+          </Box>
+        </Modal>
+      </div>
+      <div>
+        <Modal open={openConfirmCard} onClose={handleConfirmCardClose}>
+          <Box sx={style}>
+            <ConfirmMessageCard
+              title={"Confirm"}
+              message={`Are you sure to end chat with ${props.petName}`}
+              onConfirm={() => {
+                props.disconnect();
+                setOpenConfirmCard(false);
+              }}
+              onCancel={() => setOpenConfirmCard(false)}
             />
           </Box>
         </Modal>

@@ -22,6 +22,7 @@ type ModalFormProps = {
   petName: string;
   onClose?: () => void;
   roomId: string;
+  isChatEnded: boolean;
 };
 
 const ChatBox = (props: ModalFormProps) => {
@@ -140,12 +141,24 @@ const ChatBox = (props: ModalFormProps) => {
         ))}
         <div ref={messagesEndRef} />
       </List>
-      <Box
-        component="form"
-        onSubmit={(e) => {
-          e.preventDefault();
-          sendMessage();
-        }}
+      {
+      props.isChatEnded ? (
+        <Button
+        variant="contained"
+        color="success"
+        sx={{ mt: 2 }}
+        // onClick={sendMessage}
+      >
+        Upload Prescription
+      </Button>
+      ) : (
+        <>
+        <Box
+       component="form"
+       onSubmit={(e) => {
+         e.preventDefault();
+         sendMessage();
+       }}
         sx={{
           display: "flex",
           alignItems: "center",
@@ -157,14 +170,22 @@ const ChatBox = (props: ModalFormProps) => {
           inputRef={inputRef}
           variant="outlined"
           size="small"
-          value={message}
           placeholder="Type your message..."
+          value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-        <Button variant="contained" color="primary" sx={{ ml: 2 }} onClick={sendMessage}>
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ ml: 2 }}
+          onClick={sendMessage}
+        >
           Send
         </Button>
-      </Box>
+      </Box>    
+        </>
+      )
+    }
     </Paper>
   );
 };

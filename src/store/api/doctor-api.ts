@@ -30,7 +30,7 @@ export type BackendError = {
   };
 };
 
-type Appointment = {
+type AppointmentResponse = {
   id: string;
   userId: string;
   doctorId: string;
@@ -38,6 +38,7 @@ type Appointment = {
   appointmentDay: string;
   isCanceled: boolean;
   canJoin: boolean;
+  isChatEnded: boolean;
   createdAt: string;
   updatedAt: string;
   appointmentOfUserPet: {
@@ -87,7 +88,7 @@ export const doctorApi = createApi({
         method: "GET",
       }),
     }),
-    getAppointments: builder.query<Appointment[], void>({
+    getAppointments: builder.query<AppointmentResponse[], void>({
       query: () => ({
         url: "/doctor/appointments",
         method: "GET",
