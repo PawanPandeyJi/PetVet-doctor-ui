@@ -12,6 +12,7 @@ import { setupSocketConnection } from "./socket";
 import { useLoginUserDataQuery } from "./store/api/auth-api";
 import { socket } from "./socket";
 import Prescription from "./pages/Prescription";
+import PrescriptionView from "./components/PrescriptioniewPage";
 
 function App() {
   const { data: loggedInUserData } = useLoginUserDataQuery();
@@ -32,6 +33,7 @@ function App() {
           <Route path="/appointments" element={<Appointments />} />
           <Route path="/prescription/:appointmentId" element={<Prescription />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/view" element={<PrescriptionView />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
         </Routes>
