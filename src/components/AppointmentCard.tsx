@@ -167,7 +167,7 @@ const AppointmentCard = (props: AppointmentDataProps) => {
             {props.isChatEnded ? (
               <span style={{ display: "flex", justifyContent: "center", width: "100%" }}>
                 <Button variant="contained" color="success" onClick={joinAppointment}>
-                  View Chat or Presciption
+                  View Chat or Prescription
                   <UploadSharpIcon color="inherit" sx={{ height: 20, width: 20 }} />
                 </Button>
               </span>
@@ -192,6 +192,7 @@ const AppointmentCard = (props: AppointmentDataProps) => {
               petImage={props.petImage}
               petName={props.petName}
               isChatEnded={props.isChatEnded}
+              appointmentId={props.appointmentId}
             />
           </Box>
         </Modal>

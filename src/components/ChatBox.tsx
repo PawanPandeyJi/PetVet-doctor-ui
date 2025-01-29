@@ -14,6 +14,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 import { useLoginUserDataQuery } from "../store/api/auth-api";
 import { useCreateMessageMutation, useGetMessagesQuery } from "../store/api/chat";
+import { useNavigate } from "react-router-dom";
 
 const socket = io("http://localhost:8000", {});
 
@@ -23,10 +24,12 @@ type ModalFormProps = {
   onClose?: () => void;
   roomId: string;
   isChatEnded: boolean;
+  appointmentId: string;
 };
 
 const ChatBox = (props: ModalFormProps) => {
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const { data: loginUserData } = useLoginUserDataQuery();
   const {
@@ -69,6 +72,10 @@ const ChatBox = (props: ModalFormProps) => {
       };
     }
   }, [refetch, isSuccess]);
+
+  const handlePrescriptionPage = (appointmentId: string) => {
+    navigate(`/prescription/${appointmentId}`);
+  };
   return (
     <Paper
       elevation={3}
@@ -141,51 +148,44 @@ const ChatBox = (props: ModalFormProps) => {
         ))}
         <div ref={messagesEndRef} />
       </List>
-      {
-      props.isChatEnded ? (
-        <Button
-        variant="contained"
-        color="success"
-        sx={{ mt: 2 }}
-        // onClick={sendMessage}
-      >
-        Upload Prescription
-      </Button>
-      ) : (
-        <>
-        <Box
-       component="form"
-       onSubmit={(e) => {
-         e.preventDefault();
-         sendMessage();
-       }}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          mt: 2,
-        }}
-      >
-        <TextField
-          fullWidth
-          inputRef={inputRef}
-          variant="outlined"
-          size="small"
-          placeholder="Type your message..."
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        />
+      {props.isChatEnded ? (
         <Button
           variant="contained"
-          color="primary"
-          sx={{ ml: 2 }}
-          onClick={sendMessage}
+          color="success"
+          sx={{ mt: 2 }}
+          onClick={() => handlePrescriptionPage(props.appointmentId)}
         >
-          Send
+          Upload Prescription
         </Button>
-      </Box>    
+      ) : (
+        <>
+          <Box
+            component="form"
+            onSubmit={(e) => {
+              e.preventDefault();
+              sendMessage();
+            }}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              mt: 2,
+            }}
+          >
+            <TextField
+              fullWidth
+              inputRef={inputRef}
+              variant="outlined"
+              size="small"
+              placeholder="Type your message..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+            />
+            <Button variant="contained" color="primary" sx={{ ml: 2 }} onClick={sendMessage}>
+              Send
+            </Button>
+          </Box>
         </>
-      )
-    }
+      )}
     </Paper>
   );
 };
