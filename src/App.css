@@ -1,3 +1,7 @@
+body::-webkit-scrollbar {
+    display: none;
+}
+
 .myPetContainer {
     width: 100%;
     height: 90vh;
@@ -44,4 +48,15 @@
 .myPetForm {
     width: 50%;
     height: 100%;
+}
+
+@media print {
+    .printPrescription>button {
+        display: none;
+    }
+
+    #navbar {
+        display: none;
+    }
+
 }

@@ -86,6 +86,7 @@ const Appointments = () => {
                 isConnected={true}
                 disconnect={handleDisconnect}
                 isChatEnded={appointment.isChatEnded}
+                isPrescribed={appointment.isPrescribed}
               />
             );
           })}

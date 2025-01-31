@@ -40,6 +40,7 @@ type AppointmentResponse = {
   canJoin: boolean;
   isChatEnded: boolean;
   createdAt: string;
+  isPrescribed: boolean;
   updatedAt: string;
   appointmentOfUserPet: {
     id: string;
