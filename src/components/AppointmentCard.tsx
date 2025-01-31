@@ -41,6 +41,7 @@ type AppointmentDataProps = {
   canJoin: boolean;
   isConnected: boolean;
   isChatEnded: boolean;
+  isPrescribed: boolean;
   disconnect: () => void;
 };
 
@@ -193,6 +194,7 @@ const AppointmentCard = (props: AppointmentDataProps) => {
               petName={props.petName}
               isChatEnded={props.isChatEnded}
               appointmentId={props.appointmentId}
+              isPrescribed={props.isPrescribed}
             />
           </Box>
         </Modal>

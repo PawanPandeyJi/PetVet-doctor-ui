@@ -13,9 +13,7 @@ import { deepPurple } from "@mui/material/colors";
 import { useGetDoctorQuery } from "../store/api/doctor-api";
 
 function ResponsiveAppBar() {
-  const isLoggedIn = useSelector((state: RootState) => {
-    return state.auth.isLoggedIn;
-  });
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const { data: loggedInUserData } = useLoginUserDataQuery(undefined, {
     skip: !isLoggedIn,
   });
@@ -24,7 +22,7 @@ function ResponsiveAppBar() {
   });
 
   return (
-    <AppBar position="static" color="success" id="navbar">
+    <AppBar position="sticky" color="success" id="navbar">
       <Toolbar>
         <Typography
           variant="h6"

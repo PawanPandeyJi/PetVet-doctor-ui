@@ -3,12 +3,14 @@ import { useGetPrescriptionsQuery } from "../store/api/prescription-api";
 import { useNavigate } from "react-router-dom";
 
 type AppointmentProps = {
+  key: string;
   petImage: string;
   petName: string;
   petOwnerName: string;
   email: string;
   appointmentDate: string;
   appointmentId: string;
+  
 };
 
 const PrescriptionCard = (props: AppointmentProps) => {

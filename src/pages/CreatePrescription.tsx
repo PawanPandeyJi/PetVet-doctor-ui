@@ -20,7 +20,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import { useGetAppointmentsQuery } from "../store/api/doctor-api";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../components/Loader";
 import { UploadOutlined } from "@mui/icons-material";
 import { useCreatePrescriptionMutation } from "../store/api/prescription-api";
@@ -64,6 +64,7 @@ const Prescription: React.FC = () => {
   const { data: appointment, isLoading: isAppointmentDetailsLoading } = useGetAppointmentsQuery();
   const [createPrescription] = useCreatePrescriptionMutation();
   const { appointmentId } = useParams();
+  const navigate = useNavigate();
 
   const appointmentDetail = appointment?.find((appointment) => appointment.id === appointmentId);
 
@@ -107,6 +108,7 @@ const Prescription: React.FC = () => {
     setMedicines([
       { drugName: "", doseTime: "", frequency: "", dose: "", drugForm: "", duration: "" },
     ]);
+    navigate("/prescriptions");
   };
 
   const handleConfirmCardClose = () => setOpenConfirmCard(false);

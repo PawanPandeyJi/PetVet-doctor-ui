@@ -24,6 +24,7 @@ type ModalFormProps = {
   onClose?: () => void;
   roomId: string;
   isChatEnded: boolean;
+  isPrescribed: boolean;
   appointmentId: string;
 };
 
@@ -154,8 +155,9 @@ const ChatBox = (props: ModalFormProps) => {
           color="success"
           sx={{ mt: 2 }}
           onClick={() => handlePrescriptionPage(props.appointmentId)}
+          disabled={props.isPrescribed ? true : false}
         >
-          Upload Prescription
+          {props.isPrescribed ? "Prescription Uploaded" : "Upload Prescription"}
         </Button>
       ) : (
         <>

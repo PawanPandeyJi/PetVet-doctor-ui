@@ -52,6 +52,7 @@ export const prescriptionApi = createApi({
       }),
       invalidatesTags: ["prescription"],
     }),
+    
     getPrescriptions: builder.query<PrescriptionResponse[], void>({
       query: () => ({
         url: "/prescription",
