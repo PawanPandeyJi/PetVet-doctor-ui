@@ -49,3 +49,14 @@ body::-webkit-scrollbar {
     width: 50%;
     height: 100%;
 }
+
+@media print {
+    .printPrescription>button {
+        display: none;
+    }
+
+    #navbar {
+        display: none;
+    }
+
+}

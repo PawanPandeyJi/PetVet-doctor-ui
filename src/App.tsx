@@ -11,7 +11,7 @@ import { useEffect } from "react";
 import { setupSocketConnection } from "./socket";
 import { useLoginUserDataQuery } from "./store/api/auth-api";
 import { socket } from "./socket";
-import Prescription from "./pages/Prescription";
+import Prescription from "./pages/CreatePrescription";
 import PrescriptionView from "./components/PrescriptioniewPage";
 import Prescriptions from "./pages/Prescriptions";
 
@@ -33,6 +33,7 @@ function App() {
           <Route path="/register" element={<DoctorRegister />} />
           <Route path="/appointments" element={<Appointments />} />
           <Route path="/prescription/:appointmentId" element={<Prescription />} />
+          <Route path="/prescriptions/:prescriptionId" element={<PrescriptionView />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/view" element={<PrescriptionView />} />
           <Route path="/prescriptions" element={<Prescriptions />} />

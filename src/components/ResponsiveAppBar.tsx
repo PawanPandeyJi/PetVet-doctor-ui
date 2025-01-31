@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import "../App.css";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -23,7 +24,7 @@ function ResponsiveAppBar() {
   });
 
   return (
-    <AppBar position="static" color="success">
+    <AppBar position="static" color="success" id="navbar">
       <Toolbar>
         <Typography
           variant="h6"
